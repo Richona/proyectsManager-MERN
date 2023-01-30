@@ -34,10 +34,10 @@ export const Login = () => {
                 </button>
             </form>
             <nav>
-                <Link to={'/register'}>
+                <Link to={'/registro'}>
                     ¿No tenés una cuenta? Registrate
                 </Link>
-                <Link to={'/forget-password'}>
+                <Link to={'/contraseña-olvidada'}>
                     Olvidé mi password
                 </Link>
             </nav>

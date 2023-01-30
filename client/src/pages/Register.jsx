@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 export const Register = () => {
     return (
@@ -47,7 +48,7 @@ export const Register = () => {
                 </button>
             </form>
             <nav>
-                <Link to={'/'}>
+                <Link to={'/ingresar'}>
                     ¿Estás registrado? Iniciá sesión
                 </Link>
 
