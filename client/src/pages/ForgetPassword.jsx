@@ -28,10 +28,10 @@ export const ForgetPassword = () => {
                 </button>
             </form>
             <nav>
-                <Link to={"/registro"}>
+                <Link to={"/register"}>
                     ¿No tenés una cuenta? Registrate
                 </Link>
-                <Link to={"/ingresar"}>
+                <Link to={"/login"}>
                     ¿Estás registrado? Iniciá sesión
                 </Link>
             </nav>

@@ -45,14 +45,14 @@ export const TopBar = () => {
                         <div className="relative ml-3">
                             <div>
                                 <button type="button" className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                    <Link to={"/registro"} className="">Registrarse</Link>
+                                    <Link to={"/register"} className="">Registrarse</Link>
                                 </button>
                             </div>
                         </div>
                         <div className="relative ml-3">
                             <div>
                                 <button type="button" className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                    <Link to={"/ingresar"} className="">Ingresar</Link>
+                                    <Link to={"/login"} className="">Ingresar</Link>
                                 </button>
                             </div>
                         </div>

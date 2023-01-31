@@ -20,8 +20,8 @@ export const Login = () => {
                     </button>
                 </form>
                 <nav>
-                    <Link to={'/registro'}>¿No tenés una cuenta? Registrate</Link>
-                    <Link to={'/contraseña-olvidada'}> Olvidé mi password</Link>
+                    <Link to={'/register'}>¿No tenés una cuenta? Registrate</Link>
+                    <Link to={'/forget-password'}> Olvidé mi password</Link>
                 </nav>
             </section>
         </div>
