@@ -7,6 +7,7 @@ const User = require("../database/models/User");
 const errorResponse = require("../helpers/errorResponse");
 const generateJWT = require("../helpers/generateJWT");
 const generateTokenRandom = require("../helpers/generateTokenRandom");
+const { confirmRegister, forgotPassword } = require("../helpers/sendMails");
 
 module.exports = {
     register: async (req, res) => {
@@ -19,11 +20,18 @@ module.exports = {
 
             if (user) throw createError(400, "El email ya se esta registrado");
 
+            const token = generateTokenRandom()
+
             user = new User(req.body);
-            user.token = generateTokenRandom()
+            user.token = token
 
             const userStore = await user.save();
-            //TODO: enviar el email de verificacion
+
+            confirmRegister({
+                name: userStore.name,
+                email: userStore.email,
+                token: userStore.token
+            })
 
             return res.status(201).json({
                 ok: true,
@@ -95,10 +103,15 @@ module.exports = {
 
             if(!user) throw createError(400, "Email incorrecto");
 
-            user.token = generateTokenRandom()
+            const token = generateTokenRandom()
+            user.token = token
             await user.save();
 
-            //TODO: Enviar email para reestablecer contraseña
+            await forgotPassword({
+                name: user.name,
+                email: user.email,
+                token: user.token
+            })
 
             return res.status(200).json({
                 ok: true,
@@ -110,30 +123,39 @@ module.exports = {
     },
     verifyToken: async (req, res) => {
         try {
+            const {token} = req.query;
+            if(!token) throw createError(400, "No hay token en la petición");
+
+            const user = await User.findOne({token});
+            if(!user) throw createError(400, "Token invalido");
+
             return res.status(200).json({
                 ok: true,
                 msg: 'Token verificado'
             })
         } catch (error) {
-            console.log(error);
-            return res.status(error.status || 500).json({
-                ok: false,
-                msg: error.message || 'Upss, hubo un error en VERIFY-TOKEN'
-            })
+            return errorResponse(res, error, "VERIFY-TOKEN")
         }
     },
     changePassword: async (req, res) => {
         try {
+            const {token} = req.query;
+            const {password} = req.body;
+
+            if(!password) throw createError(400, "El password es obligatorio");
+
+            const user = await User.findOne({token});
+
+            user.password = password;
+            user.token = "";
+            await user.save();
+
             return res.status(200).json({
                 ok: true,
                 msg: 'Password actualizado'
             })
         } catch (error) {
-            console.log(error);
-            return res.status(error.status || 500).json({
-                ok: false,
-                msg: error.message || 'Upss, hubo un error en CHANGE-PASSWORD'
-            })
+            return errorResponse(res, error, "CHANGE-PASSWORD")
         }
     },
 }

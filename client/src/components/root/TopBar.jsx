@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 
 export const TopBar = () => {
     return (
-        <nav class="bg-gray-800">
+        <nav class="bg-gray-800 rounded-b">
             <div className="mx-auto max-w-7xl">
                 <div className="relative flex h-16 items-center justify-between">
                     <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
