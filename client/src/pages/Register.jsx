@@ -73,7 +73,7 @@ export const Register = () => {
 
     return (
         <div className="flex justify-center mt-20">
-            <section className=' bg-gray-800 w-5/6 rounded py-8 px-8 lg:w-4/6' >
+            <section className=' bg-gray-800 w-5/6 rounded py-8 px-3 lg:w-4/6' >
                 <h1 className='text-xl lg:text-3xl'>Creá tu cuenta</h1>
                 {
                     alert.msg && <Alert {...alert} />
