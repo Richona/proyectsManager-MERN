@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 export const Login = () => {
     return (
         <div className="flex justify-center mt-20">
-            <section className=' bg-gray-800 w-5/6 rounded py-8 px-8 lg:w-4/6'>
+            <section className=' bg-gray-800 w-5/6 rounded py-8 px-3 shadow-lg border border-indigo-900 lg:w-4/6 '>
                 <h1 className='text-xl lg:text-3xl'>Iniciá sesión</h1>
                 <form action="">
                     <div className='flex flex-wrap justify-center w-6/6 mt-5 md:w-5/12 md:inline-block '>
@@ -19,7 +19,7 @@ export const Login = () => {
                         Iniciar sessión
                     </button>
                 </form>
-                <nav className='flex justify-between mt-5'>
+                <nav className='flex justify-between mt-5 md:mx-12'>
                     <Link to={'/register'} className="text-xs">¿No tenés una cuenta? Registrate</Link>
                     <Link to={'/forget-password'} className="text-xs"> Olvidé mi password</Link>
                 </nav>

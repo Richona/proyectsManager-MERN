@@ -11,7 +11,7 @@ export const Register = () => {
     const [alert, setAlert] = useState({});
     const [sending, setSending] = useState(false);
 
-    const { formValues, setFormValues, handleInputChange, reset } = useForm({
+    const { formValues, handleInputChange, reset } = useForm({
         name: "",
         email: "",
         password: "",
@@ -73,7 +73,7 @@ export const Register = () => {
 
     return (
         <div className="flex justify-center mt-20">
-            <section className=' bg-gray-800 w-5/6 rounded py-8 px-3 lg:w-4/6' >
+            <section className=' bg-gray-800 w-5/6 rounded py-8 px-3 lg:w-4/6 shadow-lg border border-indigo-900' >
                 <h1 className='text-xl lg:text-3xl'>Creá tu cuenta</h1>
                 {
                     alert.msg && <Alert {...alert} />

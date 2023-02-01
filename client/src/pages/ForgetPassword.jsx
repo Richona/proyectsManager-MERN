@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 export const ForgetPassword = () => {
     return (
         <div className="flex justify-center mt-20">
-            <section className=' bg-gray-800 w-5/6 rounded py-8 px-8 lg:w-4/6'>
+            <section className=' bg-gray-800 w-5/6 rounded py-8 px-8 lg:w-4/6 shadow-lg border border-indigo-900'>
                 <h1 className='text-xl lg:text-3xl'>Recupera tu acceso</h1>
                 <form action="">
                     <div className='flex flex-wrap justify-center w-6/6 mt-5 '>

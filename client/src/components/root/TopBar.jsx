@@ -3,9 +3,9 @@ import {Link} from 'react-router-dom'
 
 export const TopBar = () => {
     return (
-        <nav className="bg-gray-800 rounded-b">
+        <nav className="bg-gray-800 rounded-b-2xl border-b border-indigo-900 lg:border-r lg:border-l">
             <div className="mx-auto max-w-7xl">
-                <div className="relative flex h-16 items-center justify-between">
+                <div className="relative flex h-24 items-center justify-between">
                     <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                         <button type="button" className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
                             <span className="sr-only">Open main menu</span>
