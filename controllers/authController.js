@@ -146,6 +146,8 @@ module.exports = {
 
             const user = await User.findOne({token});
 
+            if(!user) throw createError(400, "El token es invalido");
+
             user.password = password;
             user.token = "";
             await user.save();
