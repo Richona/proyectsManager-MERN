@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { Alert } from '../components/Alert';
 import { clientAxios } from '../config/clientAxios';
 
@@ -7,6 +8,8 @@ export const RecoverPassword = () => {
   const [alert, setAlert] = useState({});
   const [password, setPassword] = useState("");
   const [tokenChecked, setTokenChecked] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [eyePassword, setEyePassword] = useState(false);
 
   const { token } = useParams();
   const navigate = useNavigate();
@@ -43,10 +46,11 @@ export const RecoverPassword = () => {
     }
 
     try {
-
+      setSending(true)
       const { data } = await clientAxios.post(`/auth/reset-password?token=${token}`, {
         password
       })
+      setSending(false)
 
       Swal.fire({
         icon: "info",
@@ -89,18 +93,26 @@ export const RecoverPassword = () => {
                   >
                     Nueva contraseña
                   </label>
-                  <input
-                    className='w-full rounded-sm pl-3 py-2 mt-1'
-                    id="password"
-                    type="password"
-                    placeholder="Escribí tu nueva contraseña"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
+                  <div className='w-full relative'>
+                    <input
+                      className='w-full rounded-sm pl-3 py-2 mt-1'
+                      id="password"
+                      type={eyePassword ? "text" : "password"}
+                      placeholder="Escribí tu nueva contraseña"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <i
+                      class={`fa-regular ${eyePassword ? "fa-eye" : "fa-eye-slash"} absolute right-2.5 top-4`}
+                      onClick={() => setEyePassword(!eyePassword)}
+                    />
+                  </div>
+
                 </div >
                 <button
                   type="submit"
-                  className='mt-5 border-gray-500'
+                  className='mt-5 border-gray-500 disabled:bg-neutral-700'
+                  disabled={sending}
                 >
                   Resetear contraseña
                 </button>

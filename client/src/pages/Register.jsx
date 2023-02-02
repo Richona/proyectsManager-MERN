@@ -10,6 +10,8 @@ const exRegEmail = /^[^@]+@[^@]+\.[a-zA-Z]{2,}/;
 export const Register = () => {
     const [alert, setAlert] = useState({});
     const [sending, setSending] = useState(false);
+    const [eyePassword, setEyePassword] = useState(false);
+    const [eyePassword2, setEyePassword2] = useState(false);
 
     const { formValues, handleInputChange, reset } = useForm({
         name: "",
@@ -110,32 +112,44 @@ export const Register = () => {
                     </div>
                     <div className='flex flex-wrap justify-center w-6/6 mt-5 md:w-5/12 md:inline-block '>
                         <label className='w-full' htmlFor="password">Contraseña</label>
-                        <input
-                            className='w-full rounded-sm pl-3 py-2 mt-1'
-                            id="password"
-                            type="password"
-                            placeholder="Ingrese su contraseña"
-                            value={password}
-                            name="password"
-                            onChange={handleInputChange}
-                        />
+                        <div className='w-full relative'>
+                            <input
+                                className='w-full rounded-sm pl-3 py-2 mt-1'
+                                id="password"
+                                type={eyePassword ? "text" : "password"}
+                                placeholder="Ingrese su contraseña"
+                                value={password}
+                                name="password"
+                                onChange={handleInputChange}
+                            />
+                            <i
+                                class={`fa-regular ${eyePassword ? "fa-eye" : "fa-eye-slash"} absolute right-2.5 top-4`}
+                                onClick={() => setEyePassword(!eyePassword)}
+                            />
+                        </div>
                     </div>
                     <div className='flex flex-wrap justify-center w-6/6 mt-5 md:w-5/12 md:inline-block md:ml-10'>
                         <label className='w-full' htmlFor="password2">Confirma tu contraseña</label>
-                        <input
-                            className='w-full rounded-sm pl-3 py-2 mt-1'
-                            id="password2"
-                            type="password"
-                            placeholder="Ingrese su contraseña"
-                            value={password2}
-                            name="password2"
-                            onChange={handleInputChange}
-                        />
+                        <div className='w-full relative'>
+                            <input
+                                className='w-full rounded-sm pl-3 py-2 mt-1'
+                                id="password2"
+                                type={eyePassword2 ? "text" : "password"}
+                                placeholder="Ingrese su contraseña"
+                                value={password2}
+                                name="password2"
+                                onChange={handleInputChange}
+                            />
+                            <i
+                                class={`fa-regular ${eyePassword2 ? "fa-eye" : "fa-eye-slash"} absolute right-2.5 top-4`}
+                                onClick={() => setEyePassword2(!eyePassword2)}
+                            />
+                        </div>
                     </div>
-                    <button 
-                        type="submit" 
+                    <button
+                        type="submit"
                         className='mt-5 border-gray-500 disabled:bg-neutral-700'
-                        disabled = {sending}
+                        disabled={sending}
                     >
                         Crear cuenta
                     </button>

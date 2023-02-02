@@ -10,7 +10,11 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.tenor.com%2Fimages%2Fdbb01ea0a2f2f520ba31ef4372fc8fc7%2Ftenor.gif&f=1&nofb=1&ipt=5d49014c5af8093fac0e5a02645ef564ddb89f503f874099e18eaf580d7c2d6a&ipo=images");
+  background-size: cover;
+  background-repeat: no-repeat;
+  
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
