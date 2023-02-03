@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
         const authUser = async () => {
             const token = sessionStorage.getItem("token")
             if(!token){
+                setLoading(false)
                 return null
             }
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2';
 import { Alert } from '../components/Alert';
 import { clientAxios } from '../config/clientAxios';
 import useAuth from '../hooks/useAuth';
@@ -8,7 +9,10 @@ import { useForm } from '../hooks/useForm';
 export const Login = () => {
     const [alert, setAlert] = useState({});
     const {setAuth} = useAuth();
+    const [sending, setSending] = useState(false);
     const [eyePassword, setEyePassword] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleShowAlert = (msg, time = true) => {
         setAlert({
@@ -39,17 +43,33 @@ export const Login = () => {
         }
 
         try {
+            setSending(true)
             const {data} = await clientAxios.post(`/auth/login`, {
                 email,
                 password
+            })
+            setSending(false)
+
+            Swal.fire({
+                icon: "info",
+                title: `Bienvenido ${data.user.nombre}!`,
+                text: data.msg,
+                confirmButtonText: "Ve a tus proyectos",
+                allowOutsideClick: false
+            }).then(result => {
+                if (result.isConfirmed) {
+                    navigate("/projects")
+                }
             })
 
             setAuth(data.user)
             sessionStorage.setItem("token", data.token)
 
+            reset()
         } catch (error) {
             console.error(error)
             handleShowAlert(error.response?.data.msg)
+            reset()
         }
 
     }
@@ -108,7 +128,8 @@ export const Login = () => {
                     </div>
                     <button
                         type="submit"
-                        className='mt-5 border-gray-500'
+                        className='mt-5 border-gray-500 disabled:bg-neutral-700'
+                        disabled={sending}
                     >
                         Iniciar sessión
                     </button>
