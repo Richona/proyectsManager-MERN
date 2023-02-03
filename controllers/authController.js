@@ -51,22 +51,22 @@ module.exports = {
 
             let user = await User.findOne({ email });
 
-            if (!user) throw createError(403, "Creadenciales invalidadas | email");
+            if (!user) throw createError(403, "Creadenciales invalidas");
 
             if (!user.checked) throw createError(403, "Tu cuenta no ha sido confirmada");
 
-            if (!await user.checkedPassword(password)) throw createError(403, "Creadenciales invalidadas | password");
+            if (!await user.checkedPassword(password)) throw createError(403, "Creadenciales invalidas");
 
             return res.status(200).json({
                 ok: true,
                 msg: 'Usuario Logueado',
                 user: {
                     nombre: user.name,
-                    email: user.email,
-                    token: generateJWT({
-                        id: user._id
-                    })
-                } 
+                    _id: user._id,
+                },
+                token: generateJWT({
+                    id: user._id
+                })
             })
         } catch (error) {
             return errorResponse(res, error, "login")

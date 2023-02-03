@@ -123,7 +123,7 @@ export const Register = () => {
                                 onChange={handleInputChange}
                             />
                             <i
-                                class={`fa-regular ${eyePassword ? "fa-eye" : "fa-eye-slash"} absolute right-2.5 top-4`}
+                                className={`fa-regular ${eyePassword ? "fa-eye" : "fa-eye-slash"} absolute right-2.5 top-4`}
                                 onClick={() => setEyePassword(!eyePassword)}
                             />
                         </div>
@@ -141,7 +141,7 @@ export const Register = () => {
                                 onChange={handleInputChange}
                             />
                             <i
-                                class={`fa-regular ${eyePassword2 ? "fa-eye" : "fa-eye-slash"} absolute right-2.5 top-4`}
+                                className={`fa-regular ${eyePassword2 ? "fa-eye" : "fa-eye-slash"} absolute right-2.5 top-4`}
                                 onClick={() => setEyePassword2(!eyePassword2)}
                             />
                         </div>
