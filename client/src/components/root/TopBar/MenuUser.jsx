@@ -39,7 +39,7 @@ export const MenuUser = () => {
                     role="menuitem"
                     tabIndex="-1"
                     id="user-menu-item-0">
-                    Tu perfil
+                    Proyectos
                 </Link>
                 <a href="#"
                     className="block px-4 py-2 text-sm text-gray-700"

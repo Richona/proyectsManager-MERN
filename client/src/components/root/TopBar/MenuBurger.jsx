@@ -9,34 +9,30 @@ export const MenuBurger = () => {
             {
                 auth._id ? (
                     <div className="space-y-1 px-2 pt-2 pb-3">
-                        <a
-                            href="#"
-                            className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+                        <div className='mb-4'>
+                            <p className='text-xl text-gray-300'>Hola {auth.name}</p>
+                        </div>
+                        <Link
+                            to="/projects/create-project"
+                            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                             aria-current="page"
                         >
-                            Dashboard
-                        </a>
+                            Nuevo proyecto
+                        </Link>
 
-                        <a
-                            href="#"
+                        <Link
+                            to="/projects"
                             className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                         >
-                            Team
-                        </a>
+                            Proyectos
+                        </Link>
 
-                        <a
-                            href="#"
-                            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-                        >
-                            Projects
-                        </a>
-
-                        <a
-                            href="#"
+                        <Link
+                            to="/"
                             className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                         >
                             Calendar
-                        </a>
+                        </Link>
                     </div>
                 ) : (
                     <div className="space-y-1 px-2 pt-2 pb-3">

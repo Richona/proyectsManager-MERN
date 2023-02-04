@@ -15,6 +15,9 @@ import { ConfirmAccount } from '../pages/ConfirmAccount';
 
 /* Pages Privates */
 import { Projects } from '../pages/Projects';
+import { ProjectAdd } from '../pages/ProjectAdd';
+import { ProjectEdit } from '../pages/ProjectEdit';
+import { Project } from '../pages/Project';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +33,9 @@ const router = createBrowserRouter(
         {/* ROUTES PRIVATES */}
         <Route element={<ProtectedLayout />}>
           <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/create-project" element={<ProjectAdd />} /> 
+          <Route path="/projects/edit-project/:id" element={<ProjectEdit />} /> 
+          <Route path="/projects/:id" element={<Project/>}/> 
         </Route>
         
       </Route>

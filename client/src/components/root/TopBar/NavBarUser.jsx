@@ -1,36 +1,30 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export const NavBarUser = () => {
     return (
         <div className="flex space-x-4">
-            <a 
-                href="#" 
+            <Link 
+                to="/projects/create-project" 
                 className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" 
                 aria-current="page"
             >
-                Dashboard
-            </a>
+                Nuevo proyecto
+            </Link>
 
-            <a 
-                href="#" 
+            <Link
+                to="/projects" 
                 className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
             >
-                Team
-            </a>
+                Proyectos
+            </Link>
 
-            <a 
-                href="#" 
-                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-            >
-                Projects
-            </a>
-
-            <a 
-                href="#" 
+            <Link 
+                to="/" 
                 className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
             >
                 Calendar
-            </a>
+            </Link>
         </div>
     )
 }
