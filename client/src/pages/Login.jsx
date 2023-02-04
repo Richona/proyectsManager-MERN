@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2';
 import { Alert } from '../components/Alert';
 import { clientAxios } from '../config/clientAxios';
 import useAuth from '../hooks/useAuth';
@@ -50,22 +49,12 @@ export const Login = () => {
             })
             setSending(false)
 
-            Swal.fire({
-                icon: "info",
-                title: `Bienvenido ${data.user.name}!`,
-                text: data.msg,
-                confirmButtonText: "Ve a tus proyectos",
-                allowOutsideClick: false
-            }).then(result => {
-                if (result.isConfirmed) {
-                    navigate("/projects")
-                }
-            })
-
             setAuth(data.user)
             sessionStorage.setItem("token", data.token)
 
-            reset()
+            setTimeout(() => {
+                navigate("/projects")
+            }, 1000);
         } catch (error) {
             console.error(error)
             handleShowAlert(error.response?.data.msg)
