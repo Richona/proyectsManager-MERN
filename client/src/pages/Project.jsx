@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Pencil } from "../assets/pencil";
 import { Plus } from "../assets/Plus";
 import { UserPlus } from "../assets/UserPlus";
+import { Collaborator } from "../components/Collaborator";
 
 import { ProjectCard } from "../components/ProjectCard";
 import { Task } from "../components/Task";
@@ -55,9 +56,10 @@ export const Project = () => {
                         <small className="hidden md:inline-block">Agregar Colaborador</small>
                     </div>
                 </div>
-                <small>Aun no hay colaboradores agregados</small>
                 {/* Aquí se mostrarán todos los colaboradores //todo: componente Collaborator */}
-
+                <Collaborator />
+                <Collaborator />
+                <Collaborator />
             </div>
         </div>
     );
