@@ -7,6 +7,7 @@ import { MenuBurger } from './MenuBurger';
 import { MenuGuest } from './MenuGuest';
 import { MenuUser } from './MenuUser';
 import { NavBarUser } from './NavBarUser';
+import { Search } from './Search';
 
 export const TopBar = () => {
     const [showMenu, setShowMenu] = useState(true);
@@ -28,7 +29,7 @@ export const TopBar = () => {
                             <Burger />
                         </button>
                     </div>
-                    <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                    <div className="flex flex-1 items-center justify-center sm:flex-none sm:items-stretch sm:justify-start">
                         <Logo />
                         <div className="hidden sm:ml-6 sm:block">
                             {auth._id && (
@@ -36,7 +37,13 @@ export const TopBar = () => {
                             )}
                         </div>
                     </div>
-                    <input type="text" placeholder="Buscar proyecto..." /> 
+                    {/* BUSCADOR */}
+                    {auth._id && (
+                        <div className="relative w-2/5 hidden sm:block">
+                            <Search />
+                        </div>
+                    )}
+
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 ">
                         {/* <button type="button" className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="sr-only">View notifications</span>

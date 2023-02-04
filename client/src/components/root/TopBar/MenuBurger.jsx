@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import useAuth from '../../../hooks/useAuth'
+import { Search } from './Search'
 
 export const MenuBurger = () => {
     const { auth } = useAuth()
@@ -11,6 +12,11 @@ export const MenuBurger = () => {
                     <div className="space-y-1 px-2 pt-2 pb-3">
                         <div className='mb-4'>
                             <p className='text-xl text-gray-300'>Hola {auth.name}</p>
+                        </div>
+                        <div className='flex justify-center'>
+                            <div className="relative w-4/5 text-center">
+                                <Search />
+                            </div>
                         </div>
                         <Link
                             to="/projects/create-project"
