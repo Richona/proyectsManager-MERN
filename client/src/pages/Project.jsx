@@ -1,85 +1,64 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Pencil } from "../assets/pencil";
+import { Plus } from "../assets/Plus";
+import { UserPlus } from "../assets/UserPlus";
+
+import { ProjectCard } from "../components/ProjectCard";
+import { Task } from "../components/Task";
 
 export const Project = () => {
     return (
-        <div>
-            <div>
-                <h1>Nombre del proyecto</h1>
-                <Link
-                    to={`/projects/edit-project/:id`}
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
+        <div className="flex flex-col gap-8 mt-20 mx-6 md:flex-row text-gray-300">
+            <ProjectCard />
+            <div className="w-12/12 text-left md:w-9/12">
+                <div className="flex gap-4 justify-between items-center">
+                    <h1 className="font-bold text-2xl md:text-4xl">
+                        Nombre del proyecto
+                    </h1>
+                    <Link
+                        to={`/projects/edit-project/:id`}
+                        className="flex gap-2"
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 
-19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 
-4.487zm0 0L19.5 7.125"
-                        />
-                    </svg>
-                    <p>Editar</p>
-                </Link>
+                        <Pencil />
+                        <small>Editar</small>
+                    </Link>
 
-            </div>
-            <div >
-                <p >Tareas del proyecto</p>
-                <div
-                /* onClick={} */
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 4.5v15m7.5-7.5h-15"
-                        />
-                    </svg>
-                    <p>Nueva Tarea</p>
                 </div>
-
-            </div>
-            Aquí se mostrarán todas las tareas //todo: componente Task
-            <div >
-                <p >Colaboradores</p>
-                <button
-                /* onClick={} */
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
+                <div className="flex gap-4 justify-between items-center mt-8">
+                    <p className="font-bold text-lg md:text-xl">
+                        Tareas del proyecto
+                    </p>
+                    <div
+                        className="flex gap-2"
+                        /* onClick={} */
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 
-0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 
-0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
-                        />
-                    </svg>
+                        <Plus />
+                        <small>Nueva Tarea</small>
+                    </div>
 
-                    <p>Agregar Colaborador</p>
-                </button>
+                </div>
+                {/* Aquí se mostrarán todas las tareas //todo: componente Task */}
+                <Task />
+                <Task />
+                <Task />
+
+                <div className="flex gap-4 justify-between items-center mt-8">
+                    <p className="font-bold text-lg md:text-xl">
+                        Colaboradores
+                    </p>
+                    <div
+                        className="flex gap-2"
+                        /* onClick={} */
+                    >
+                        <UserPlus />
+                        <small>Agregar Colaborador</small>
+                    </div>
+                </div>
+                <small>Aun no hay colaboradores agregados</small>
+                {/* Aquí se mostrarán todos los colaboradores //todo: componente Collaborator */}
+
             </div>
-            Aquí se mostrarán todos los colaboradores //todo: componente Collaborator
-
         </div>
     );
 };
