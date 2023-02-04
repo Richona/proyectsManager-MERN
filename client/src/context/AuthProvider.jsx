@@ -28,8 +28,8 @@ const AuthProvider = ({ children }) => {
                 
                 setAuth(data.user)
             } catch (error) {
-                console.error(error)
-                setAuth({})
+                console.error(error.response?.data)
+                sessionStorage.removeItem("token")
             }finally{
                 setLoading(false)
             }

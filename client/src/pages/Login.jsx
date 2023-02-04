@@ -52,7 +52,7 @@ export const Login = () => {
 
             Swal.fire({
                 icon: "info",
-                title: `Bienvenido ${data.user.nombre}!`,
+                title: `Bienvenido ${data.user.name}!`,
                 text: data.msg,
                 confirmButtonText: "Ve a tus proyectos",
                 allowOutsideClick: false

@@ -6,7 +6,9 @@ const connectDB = require('./database/config');
 
 const app = express();
 
-const cors = require("cors")
+const cors = require("cors");
+const checkToken = require('./middlewares/checkToken');
+
 const whiteList = [process.env.URL_FRONTEND, process.env.URL_FRONTEND2]
 const corsOptions = {
   origin: function (origin, cb) {
@@ -24,13 +26,13 @@ app
   .use(logger('dev'))
   .use(express.json())
   .use(express.urlencoded({ extended: false }))
-  .use(cors(corsOptions))
+  .use(cors())
   
   /* RUTAS */
 app
   .use('/api/auth',require('./routes/auth'))
   .use('/api/users',require('./routes/users'))
-  .use('/api/projects',require('./routes/projects'))
+  .use('/api/projects', checkToken, require('./routes/projects'))
   .use('/api/tasks',require('./routes/tasks'))
 
 

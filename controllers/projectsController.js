@@ -1,75 +1,111 @@
+const createError = require("http-errors");
+const Project = require("../database/models/Project");
+const errorResponse = require("../helpers/errorResponse");
+const ObjetcId = require("mongoose").Types.ObjectId
+
 module.exports = {
     list : async (req,res) => {
         try {
+            const projects = await Project.find().where("createdBy").equals(req.user)
+
             return res.status(200).json({
                 ok : true,
-                msg :'Lista de Proyectos'
+                msg :'Lista de Proyectos',
+                projects
             })
         } catch (error) {
-            console.log(error);
-            return res.status(error.status || 500).json({
-                ok : false,
-                msg : error.message || 'Upss, hubo un error en PROJECTS-LIST'
-            })
+            return errorResponse(res, error, "PROJECTS-LIST")
         }
        
     },
     store : async (req,res) => {
         try {
+            const {name, description, client} = req.body;
+            if([name, description, client].includes("") || !name || !description || !client) throw createError(400,"Todos los campos son obligatorios");
+
+            if (!req.user) throw createError(401,"Error de autenticacion");
+
+            const project = new Project(req.body)
+            project.createdBy = req.user._id;
+
+            const projectStore = await project.save()
+
             return res.status(201).json({
                 ok : true,
-                msg :'Proyecto guardado'
+                msg :'Proyecto guardado',
+                project: projectStore
             })
         } catch (error) {
-            console.log(error);
-            return res.status(error.status || 500).json({
-                ok : false,
-                msg : error.message || 'Upss, hubo un error en STORE-PROJECT'
-            })
+            return errorResponse(res, error, "STORE-PROJECT")
         }
        
     },
     detail : async (req,res) => {
         try {
+            const {id} = req.params;
+            if(!ObjetcId.isValid(id)) throw createError(404,"No es un ID valido");
+
+            const project = await Project.findById(id)
+            if (!project) throw createError(404,"Proyecto no encontrado");
+
+            if (req.user._id.toString() !== project.createdBy.toString()) throw createError(401,"No estas autorizade");
+
             return res.status(200).json({
                 ok : true,
-                msg :'Detalle del Proyecto'
+                msg :'Detalle del Proyecto',
+                project
             })
         } catch (error) {
-            console.log(error);
-            return res.status(error.status || 500).json({
-                ok : false,
-                msg : error.message || 'Upss, hubo un error en PROJECT-DETAIL'
-            })
+            return errorResponse(res, error, "PROJECT-DETAIL")
         }
        
     },
     update : async (req,res) => {
         try {
+            const {id} = req.params;
+            if(!ObjetcId.isValid(id)) throw createError(404,"No es un ID valido");
+
+            const project = await Project.findById(id)
+            if (!project) throw createError(404,"Proyecto no encontrado");
+
+            if (req.user._id.toString() !== project.createdBy.toString()) throw createError(401,"No estas autorizade");
+
+            const {name, description, client, dataExpire} = req.body;
+
+            project.name = name || project.name;
+            project.description = description || project.description;
+            project.client = client || project.client;
+            project.dataExpire = dataExpire || project.dataExpire;
+
+            const projectUpdated = await project.save()
+
             return res.status(201).json({
                 ok : true,
-                msg :'Proyecto actualizado'
+                msg :'Proyecto actualizado',
+                project: projectUpdated
             })
         } catch (error) {
-            console.log(error);
-            return res.status(error.status || 500).json({
-                ok : false,
-                msg : error.message || 'Upss, hubo un error en PROJECT-UPDATE'
-            })
+            return errorResponse(res, error, "PROJECT-UPDATE")
         }
     },
     remove : async (req,res) => {
         try {
+            const {id} = req.params;
+            if(!ObjetcId.isValid(id)) throw createError(404,"No es un ID valido");
+
+            const project = await Project.findById(id)
+            if (!project) throw createError(404,"Proyecto no encontrado");
+
+            if (req.user._id.toString() !== project.createdBy.toString()) throw createError(401,"No estas autorizade");
+
+            await project.deleteOne()
+            
             return res.status(200).json({
                 ok : true,
                 msg :'Proyecto eliminado'
             })
         } catch (error) {
-            console.log(error);
-            return res.status(error.status || 500).json({
-                ok : false,
-                msg : error.message || 'Upss, hubo un error en PROJECT-REMOVE'
-            })
+            return errorResponse(res, error, "PROJECT-REMOVE")
         }
     },
     addCollaborator : async (req,res) => {
@@ -79,11 +115,7 @@ module.exports = {
                 msg :'Colaborador agregado'
             })
         } catch (error) {
-            console.log(error);
-            return res.status(error.status || 500).json({
-                ok : false,
-                msg : error.message || 'Upss, hubo un error en COLLABORATOR-ADD'
-            })
+            return errorResponse(res, error, "COLLABORATOR-ADD")
         }
     },
     removeCollaborator : async (req,res) => {
@@ -93,11 +125,7 @@ module.exports = {
                 msg :'Colaborador eliminado'
             })
         } catch (error) {
-            console.log(error);
-            return res.status(error.status || 500).json({
-                ok : false,
-                msg : error.message || 'Upss, hubo un error en COLLABORATOR-REMOVE'
-            })
+            return errorResponse(res, error, "COLLABORATOR-REMOVE")
         }
     },
 
