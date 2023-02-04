@@ -21,7 +21,7 @@ export const Project = () => {
                         className="flex gap-2"
                     >
                         <Pencil />
-                        <small>Editar</small>
+                        <small className="hidden md:inline-block">Editar</small>
                     </Link>
 
                 </div>
@@ -34,7 +34,7 @@ export const Project = () => {
                         /* onClick={} */
                     >
                         <Plus />
-                        <small>Nueva Tarea</small>
+                        <small className="hidden md:inline-block">Nueva Tarea</small>
                     </div>
 
                 </div>
@@ -52,7 +52,7 @@ export const Project = () => {
                         /* onClick={} */
                     >
                         <UserPlus />
-                        <small>Agregar Colaborador</small>
+                        <small className="hidden md:inline-block">Agregar Colaborador</small>
                     </div>
                 </div>
                 <small>Aun no hay colaboradores agregados</small>
