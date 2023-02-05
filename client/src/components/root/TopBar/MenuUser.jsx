@@ -28,21 +28,21 @@ export const MenuUser = () => {
             </div>
 
             <div
-                className={`absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${showMenuUser && 'hidden'}`}
+                className={`text-gray-300 text-center absolute right-0 z-10 mt-2 w-48 origin-top-right bg-gray-800 border rounded-md border-indigo-900 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${showMenuUser && 'hidden'}`}
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="user-menu-button"
                 tabIndex="-1"
             >
                 <Link to="/projects"
-                    className="block px-4 py-2 text-sm text-gray-700"
+                    className="inline-block w-10/12 px-4 py-2 text-sm border-b border-indigo-900"
                     role="menuitem"
                     tabIndex="-1"
                     id="user-menu-item-0">
                     Proyectos
                 </Link>
                 <a href="#"
-                    className="block px-4 py-2 text-sm text-gray-700"
+                    className="inline-block w-10/12 px-4 py-2 text-sm"
                     role="menuitem"
                     tabIndex="-1"
                     id="user-menu-item-2"
