@@ -75,14 +75,19 @@ export const Home = () => {
   }
 
   return (
-    <>
+    <div className='mx-6'>
+      <div className='mt-20'>
+        <h1 className='font-mono'>
+          Memotest
+        </h1>
+      </div>
       <Board
         onChange={handleCompleted}
         memoBlocks={shuffledMemoBlocks}
         animating={animating}
         handleMemoClick={handleMemoClick}
       />
-      <div className='flex justify-center items-center gap-10'>
+      <div className='flex justify-center items-center gap-10 font-mono'>
         <button
           onClick={handleReset}
           className={`py-3 bg-gray-800 border-gray-500 hover:border-indigo-700 `}
@@ -90,10 +95,13 @@ export const Home = () => {
           Reiniciar
         </button>
         <div className='py-3 px-6 rounded-lg bg-gray-800 border border-gray-500'>
-          Completados: {sumCompleted} 
+          <span className='hidden md:inline-block'>
+              Completados:
+          </span> 
+          {sumCompleted} 
         </div>
       </div>
-    </>
+    </div>
 
   )
 }

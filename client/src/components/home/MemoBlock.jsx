@@ -17,7 +17,7 @@ export const MemoBlock = ({animating, handleMemoClick, memoBlock, onChange}) => 
             >
             </div>
             <div 
-                className={`${classes.memoBlockBack} absolute w-full h-full rounded bg-indigo-800 flex justify-center items-center text-5xl`}
+                className={`${classes.memoBlockBack} absolute w-full h-full rounded bg-indigo-800 flex justify-center items-center text-3xl sm:text-5xl`}
             >
                 {memoBlock.emoji}
             </div>
