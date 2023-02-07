@@ -1,15 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export const ProjectPreview = () => {
+export const ProjectPreview = ({name, _id, client}) => {
   return (
     <div className="border-b border-indigo-900">
       <div className="flex gap-5 justify-between py-3">
         <p>
-          Nombre del proyecto
-          <span>| Cliente</span>
+          {name}
+          <span>{` | ${client}`}</span>
         </p>
-        <Link to={"/projects/:id"}>
+        <Link to={`/projects/${_id}`}>
           <small className="text-xs">
             VER PROYECTO
           </small>

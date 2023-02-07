@@ -1,12 +1,51 @@
 import React from "react";
+import { useForm } from "../hooks/useForm";
+import { useProjects } from "../hooks/useProjects";
+import { Alert } from "./Alert";
+import { useNavigate } from 'react-router-dom';
 
-export const FormProject = ({ buttonText }) => {
+export const FormProject = ({ buttonText }) => {    
+    const navigate = useNavigate()
+
+    const {alert, showAlert, storeProject} = useProjects();
+
+    const {formValues, handleInputChange, reset} = useForm({
+        name: "",
+        description: "",
+        dateExpire: "",
+        client: ""
+    })
+
+    const {name, description, dateExpire, client} = formValues;
+
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+
+        if ([name, description, dateExpire, client].includes("")) {
+            showAlert("Todos los campos son obligatorios")
+            return null
+        }
+
+        storeProject({
+            name,
+            description,
+            dateExpire,
+            client
+        })
+
+        setTimeout(() => {
+            navigate("/projects")
+        }, 3000);
+    }
 
     return (
         <form
-            /* onSubmit={} */
+            onSubmit={handleSubmit}
             noValidate
         >
+        {
+            alert.msg && <Alert {...alert} />
+        }
             <div className="flex flex-wrap justify-center w-6/6 mt-5">
                 <label
                     htmlFor="name"
@@ -19,6 +58,9 @@ export const FormProject = ({ buttonText }) => {
                     type="text"
                     placeholder="Nombre del proyecto"
                     className='w-full rounded-sm px-3 py-2 mt-1'
+                    value={name}
+                    onChange={handleInputChange}
+                    name="name"
                 />
             </div>
             <div className="flex flex-wrap justify-center w-6/6 mt-5">
@@ -34,6 +76,9 @@ export const FormProject = ({ buttonText }) => {
                     style={{ resize: "none" }}
                     placeholder="Descripción del proyecto"
                     className='w-full rounded-sm px-3 py-2 mt-1'
+                    value={description}
+                    onChange={handleInputChange}
+                    name="description"
                 />
             </div>
             <div className="flex flex-wrap justify-center w-6/6 mt-5 ">
@@ -47,6 +92,9 @@ export const FormProject = ({ buttonText }) => {
                     id="date-expire"
                     type="date"
                     className='w-full rounded-sm px-3 py-2 mt-1'
+                    value={dateExpire}
+                    onChange={handleInputChange}
+                    name="dateExpire"
                 />
             </div>
             <div className="flex flex-wrap justify-center w-6/6 mt-5 ">
@@ -61,6 +109,9 @@ export const FormProject = ({ buttonText }) => {
                     type="text"
                     placeholder="Nombre del cliente"
                     className='w-full rounded-sm px-3 py-2 mt-1'
+                    value={client}
+                    onChange={handleInputChange}
+                    name="client"
                 />
             </div>
             <button
