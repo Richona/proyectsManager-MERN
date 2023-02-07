@@ -31,7 +31,7 @@ app
   /* RUTAS */
 app
   .use('/api/auth',require('./routes/auth'))
-  .use('/api/users',require('./routes/users'))
+  .use('/api/users', checkToken,require('./routes/users'))
   .use('/api/projects', checkToken, require('./routes/projects'))
   .use('/api/tasks',require('./routes/tasks'))
 
