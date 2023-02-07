@@ -50,7 +50,6 @@ module.exports = {
     },
     remove: async (req, res) => {
         try {
-            console.log(req.user)
             const {id} = req.params;
             if(!ObjetcId.isValid(id)) throw createHttpError(404,"No es un ID valido");
 

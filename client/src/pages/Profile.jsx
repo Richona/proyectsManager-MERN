@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
+import Swal from 'sweetalert2';
 import { Pencil } from '../assets/Pencil';
+import { Trash } from '../assets/Trash';
 import { XMark } from '../assets/XMark';
 import { Alert } from '../components/Alert';
 import { useForm } from '../hooks/useForm';
 import useUsers from '../hooks/useUsers'
 
 export const Profile = () => {
-    const { alert, auth, updatedUser, user } = useUsers();
+    const { alert, auth, user, updatedUser, removeUser } = useUsers();
 
     const [pencilInput, setPencilInput] = useState(true);
 
@@ -26,11 +28,39 @@ export const Profile = () => {
         })
     }
 
+    const handleRemove = () =>{
+        Swal.fire({
+            icon: "warning",
+            title: "Eliminar cuenta!",
+            text: "¿Estas seguro de eliminar tu cuenta?",
+            confirmButtonText: "No, dejarla vivir :C",
+            cancelButtonText: "Si, eliminar cuenta",
+            showCancelButton: true,
+            allowOutsideClick: false
+        }).then(result => {
+            if (!result.isConfirmed) {
+                Swal.fire('Cuenta eliminada', '', 'info')
+                removeUser()
+            }else{
+                Swal.fire('Cuenta en pie!', '', 'success')
+            }
+        })
+    }
+
     return (
-        <div className='mt-20 mx-6'>
-            <h1 className='font-bold text-4xl'>
-                Bienvenido {user.name ? user.name : auth.name}
-            </h1>
+        <div className='mt-20 mx-6 text-gray-300'>
+            <div className='flex gap-4 justify-between items-center'>
+                <h1 className='font-bold text-4xl'>
+                    Bienvenido {user.name ? user.name : auth.name}
+                </h1>
+                <div 
+                    className='flex gap-2'
+                    onClick={handleRemove}
+                >
+                    <Trash/>
+                    <small className='hidden sm:inline-block'>Eliminar usuario</small> 
+                </div>
+            </div>
             <div className='bg-gray-800 w-6/6 rounded mt-3 pb-5 px-3 shadow-lg border border-indigo-900'>
                 {
                     alert.msg && <Alert {...alert} />
@@ -69,16 +99,16 @@ export const Profile = () => {
                                 className='w-full rounded-sm pl-3 py-2 mt-1'
                                 id="email"
                                 type="email"
-                                placeholder={user.email ? user.email : auth.email}
+                                placeholder={user.email || auth.email}
                                 name='email'
                                 value={email}
                                 disabled={pencilInput}
                                 onChange={handleInputChange}
                             />
-                            <div 
+                            <div
                                 className={`absolute right-2.5 top-3`}
                                 onClick={() => setPencilInput(!pencilInput)}>
-                                {pencilInput ? <Pencil/> : <XMark/>}
+                                {pencilInput ? <Pencil /> : <XMark />}
                             </div>
                         </div>
                     </div>

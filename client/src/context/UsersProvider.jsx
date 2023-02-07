@@ -66,7 +66,29 @@ const UsersProvider = ({ children }) => {
         }
     }
 
-    console.log(user)
+    const removeUser = async () =>{
+        const token = sessionStorage.getItem("token")
+            if (!token) return null
+
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: token
+                }
+            }
+
+            await clientAxios.delete(`/users/profile/${auth._id}`, config)
+
+            setAuth({})
+            setUser({})
+            sessionStorage.removeItem("token")
+
+            Toast.fire({
+                icon: "danger",
+                title: data.msg
+            })
+    }
+    
     return (
         <UserContext.Provider
             value={{
@@ -76,7 +98,8 @@ const UsersProvider = ({ children }) => {
                 auth,
                 setAuth,
                 updatedUser,
-                user
+                user,
+                removeUser
             }}
         >
             {children}
