@@ -15,6 +15,7 @@ import { RecoverPassword } from '../pages/RecoverPassword';
 import { ConfirmAccount } from '../pages/ConfirmAccount';
 
 /* Pages Privates */
+import { Profile } from '../pages/Profile';
 import { Projects } from '../pages/Projects';
 import { ProjectAdd } from '../pages/ProjectAdd';
 import { ProjectEdit } from '../pages/ProjectEdit';
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
 
       {/* ROUTES PRIVATES */}
       <Route element={<ProtectedLayout />}>
+        <Route path="/profile/:id" element={<Profile />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/projects/create-project" element={<ProjectAdd />} />
         <Route path="/projects/edit-project/:id" element={<ProjectEdit />} />

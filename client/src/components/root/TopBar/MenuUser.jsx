@@ -4,7 +4,7 @@ import useAuth from '../../../hooks/useAuth';
 
 export const MenuUser = () => {
     const [showMenuUser, setShowMenuUser] = useState(true);
-    const {setAuth } = useAuth()
+    const {auth, setAuth } = useAuth()
 
     const handleOutAccount = () => {
         setAuth({})
@@ -33,13 +33,20 @@ export const MenuUser = () => {
                 aria-orientation="vertical"
                 aria-labelledby="user-menu-button"
                 tabIndex="-1"
-            >
+            >   
+                <Link to={`/profile/${auth._id}`}
+                    className="inline-block w-10/12 px-4 py-2 text-sm border-b border-indigo-900"
+                    role="menuitem"
+                    tabIndex="-1"
+                    id="user-menu-item-0">
+                    Mi perfil
+                </Link>
                 <Link to="/projects"
                     className="inline-block w-10/12 px-4 py-2 text-sm border-b border-indigo-900"
                     role="menuitem"
                     tabIndex="-1"
                     id="user-menu-item-0">
-                    Proyectos
+                    Mis proyectos
                 </Link>
                 <a href="#"
                     className="inline-block w-10/12 px-4 py-2 text-sm"
