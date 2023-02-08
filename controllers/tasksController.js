@@ -9,12 +9,12 @@ module.exports = {
             const {project} = req.query;
             if(!ObjetcId.isValid(project)) throw createHttpError(404,"No es un ID valido");
 
-            const projects = await Task.find().where("project").equals(project).select("-createdAt -__v")
+            const tasks = await Task.find().where("project").equals(project).select("-createdAt -__v")
 
             return res.status(200).json({
                 ok : true,
                 msg :'Lista de Tareas',
-                projects
+                tasks
             })
         } catch (error) {
             return errorResponse(res, error, "TASKS-LIST")

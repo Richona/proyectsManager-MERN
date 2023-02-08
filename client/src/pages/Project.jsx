@@ -10,17 +10,21 @@ import { ProjectCard } from "../components/ProjectCard";
 import { Spinner } from "../components/Spinner";
 import { Task } from "../components/Task";
 import { useProjects } from "../hooks/useProjects";
+import { useTasks } from "../hooks/useTasks";
 
 export const Project = () => {
     const {id} = useParams()
 
     const { loading, alert, getProject, project } = useProjects();
-
+    const {tasks, getTasks} = useTasks()
+    console.log(tasks)
     const { name, description, dateExpire, client, _id } = project
 
     useEffect(() => {
         getProject(id)
+        getTasks(id)
     }, [id]);
+    
 
     if (alert.msg) return <Alert {...alert}/>
 
