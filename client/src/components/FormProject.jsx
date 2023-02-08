@@ -1,24 +1,49 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm } from "../hooks/useForm";
 import { useProjects } from "../hooks/useProjects";
 import { Alert } from "./Alert";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export const FormProject = ({ buttonText }) => {    
+export const FormProject = ({ buttonText }) => {
     const navigate = useNavigate()
 
-    const {alert, showAlert, storeProject} = useProjects();
+    const { alert, showAlert, storeProject, project } = useProjects();
 
-    const {formValues, handleInputChange, reset} = useForm({
+    const { id } = useParams()
+
+    const inputName = useRef(null)
+    const inputDescription = useRef(null)
+    const inputDateExpire = useRef(null)
+    const inputClient = useRef(null)
+
+    const { formValues, handleInputChange, reset, setFormValues } = useForm({
         name: "",
         description: "",
         dateExpire: "",
         client: ""
     })
 
-    const {name, description, dateExpire, client} = formValues;
+    const { name, description, dateExpire, client } = formValues;
 
-    const handleSubmit = (e) =>{
+    useEffect(() => {
+        if (id) {
+            inputName.current.value = project.name
+            inputDescription.current.value = project.description
+            inputDateExpire.current.value = project.dateExpire && project.dateExpire.split("T")[0]
+            inputClient.current.value = project.client
+
+            setFormValues({
+                name : project.name,
+                description : project.description,
+                dateExpire : project.dateExpire.split("T")[0],
+                client : project.client
+            })
+
+        }
+
+    }, [id]);
+
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         if ([name, description, dateExpire, client].includes("")) {
@@ -27,6 +52,7 @@ export const FormProject = ({ buttonText }) => {
         }
 
         storeProject({
+            id: id ? id: null,
             name,
             description,
             dateExpire,
@@ -43,9 +69,9 @@ export const FormProject = ({ buttonText }) => {
             onSubmit={handleSubmit}
             noValidate
         >
-        {
-            alert.msg && <Alert {...alert} />
-        }
+            {
+                alert.msg && <Alert {...alert} />
+            }
             <div className="flex flex-wrap justify-center w-6/6 mt-5">
                 <label
                     htmlFor="name"
@@ -61,6 +87,7 @@ export const FormProject = ({ buttonText }) => {
                     value={name}
                     onChange={handleInputChange}
                     name="name"
+                    ref={inputName}
                 />
             </div>
             <div className="flex flex-wrap justify-center w-6/6 mt-5">
@@ -79,6 +106,7 @@ export const FormProject = ({ buttonText }) => {
                     value={description}
                     onChange={handleInputChange}
                     name="description"
+                    ref={inputDescription}
                 />
             </div>
             <div className="flex flex-wrap justify-center w-6/6 mt-5 ">
@@ -95,6 +123,7 @@ export const FormProject = ({ buttonText }) => {
                     value={dateExpire}
                     onChange={handleInputChange}
                     name="dateExpire"
+                    ref={inputDateExpire}
                 />
             </div>
             <div className="flex flex-wrap justify-center w-6/6 mt-5 ">
@@ -112,6 +141,7 @@ export const FormProject = ({ buttonText }) => {
                     value={client}
                     onChange={handleInputChange}
                     name="client"
+                    ref={inputClient}
                 />
             </div>
             <button

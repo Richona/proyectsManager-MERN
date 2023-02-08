@@ -6,7 +6,7 @@ const ObjetcId = require("mongoose").Types.ObjectId
 module.exports = {
     list : async (req,res) => {
         try {
-            const projects = await Project.find().where("createdBy").equals(req.user)
+            const projects = await Project.find().where("createdBy").equals(req.user).select("name client")
 
             return res.status(200).json({
                 ok : true,
@@ -45,7 +45,7 @@ module.exports = {
             const {id} = req.params;
             if(!ObjetcId.isValid(id)) throw createError(404,"No es un ID valido");
 
-            const project = await Project.findById(id)
+            const project = await Project.findById(id).select("-createdAt")
             if (!project) throw createError(404,"Proyecto no encontrado");
 
             if (req.user._id.toString() !== project.createdBy.toString()) throw createError(401,"No estas autorizade");
@@ -70,12 +70,12 @@ module.exports = {
 
             if (req.user._id.toString() !== project.createdBy.toString()) throw createError(401,"No estas autorizade");
 
-            const {name, description, client, dataExpire} = req.body;
+            const {name, description, client, dateExpire} = req.body;
 
             project.name = name || project.name;
             project.description = description || project.description;
             project.client = client || project.client;
-            project.dataExpire = dataExpire || project.dataExpire;
+            project.dateExpire = dateExpire || project.dateExpire;
 
             const projectUpdated = await project.save()
 

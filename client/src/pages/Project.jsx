@@ -16,7 +16,7 @@ export const Project = () => {
 
     const { loading, alert, getProject, project } = useProjects();
 
-    const { name, description, dateExpire, client } = project
+    const { name, description, dateExpire, client, _id } = project
 
     useEffect(() => {
         getProject(id)
@@ -37,7 +37,7 @@ export const Project = () => {
                                         {name}
                                     </h1>
                                     <Link
-                                        to={`/projects/edit-project/:id`}
+                                        to={`/projects/edit-project/${_id}`}
                                         className="flex gap-2"
                                     >
                                         <Pencil />
@@ -45,7 +45,11 @@ export const Project = () => {
                                     </Link>
 
                                 </div>
-                                <h2 className="text-1xl uppercase font-bold">{client}</h2>
+                                <div className="flex justify-between">
+                                    <h2 className="text-1xl uppercase font-bold">{client}</h2>
+                                    <p>Fecha de entrega: {dateExpire && dateExpire.split("T")[0]}</p>
+                                </div>
+                                
                                 <hr className="border-b border-indigo-800"/>
                                 <p>{description}</p>
                                 <div className="flex gap-4 justify-between items-center mt-8">

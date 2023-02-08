@@ -96,8 +96,56 @@ const ProjectsProvider = ({ children }) => {
         }
       }
 
-      const { data } = await clientAxios.post(`/projects`, project, config)
-      setProjects([...projects, data.project])
+      if (project.id) {
+        const { data } = await clientAxios.put(`/projects/${project.id}`, project, config)
+
+        const projectsUpdated = projects.map(projectState => {
+          if (projectState._id === data.project._id) {
+            return data.project
+          }
+          return projectState
+        })
+
+        setProjects(projectsUpdated)
+
+        Toast.fire({
+          icon: "success",
+          title: data.msg
+        })
+
+      } else {
+        const { data } = await clientAxios.post(`/projects`, project, config)
+        setProjects([...projects, data.project])
+
+        Toast.fire({
+          icon: "success",
+          title: data.msg
+        })
+      }
+
+    } catch (error) {
+      console.error(error)
+      showAlert(error.response ? error.response.data.msg : "Ups, hubo un error", false)
+    }
+  }
+
+  const deleteProject = async (id) => {
+    try {
+      const token = sessionStorage.getItem("token")
+      if (!token) return null
+
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: token
+        }
+      }
+
+      const { data } = await clientAxios.delete(`/projects/${id}`, config)
+
+      const projectsFiltered = projects.filter(project => project._id !== id)
+
+      setProject(projectsFiltered)
 
       Toast.fire({
         icon: "success",
@@ -120,7 +168,8 @@ const ProjectsProvider = ({ children }) => {
         getProjects,
         project,
         getProject,
-        storeProject
+        storeProject,
+        deleteProject
       }}
     >
       {children}
