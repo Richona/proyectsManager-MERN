@@ -8,6 +8,8 @@ const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState({});
     const [loading, setLoading] = useState(true);
 
+    const [showMenuUser, setShowMenuUser] = useState(true);
+
     useEffect(() => {
         const authUser = async () => {
             const token = sessionStorage.getItem("token")
@@ -38,12 +40,18 @@ const AuthProvider = ({ children }) => {
         authUser()
     }, []);
 
+    const handleShowMenuUser = () => {
+        setShowMenuUser(!showMenuUser)
+    }
+
     return (
         <AuthContext.Provider
             value={{
                 auth,
                 setAuth,
-                loading
+                loading,
+                showMenuUser,
+                handleShowMenuUser
             }}
         >
             {children}
