@@ -26,8 +26,18 @@ const projectSchema = new mongoose.Schema({
     },
     collaborators : [
         {
-            type : mongoose.Schema.Types.ObjectId,
-            ref : 'User',
+            id: {
+                type : mongoose.Schema.Types.ObjectId,
+                ref : 'User',
+            },
+            name: {
+                type : String,
+                trim : true,
+            },
+            email: {
+                type : String,
+                trim : true,
+            }
         },
     ]
 },{

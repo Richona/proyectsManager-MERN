@@ -1,5 +1,6 @@
 const createError = require("http-errors");
 const Project = require("../database/models/Project");
+const User = require("../database/models/User");
 const errorResponse = require("../helpers/errorResponse");
 const ObjetcId = require("mongoose").Types.ObjectId
 
@@ -110,9 +111,40 @@ module.exports = {
     },
     addCollaborator : async (req,res) => {
         try {
+            const {collaborators, idProject} = req.body;
+
+            if([collaborators, idProject].includes("") || !collaborators || !idProject) throw createError(400,"Debes ingresar un colaborador");
+            
+            if(!ObjetcId.isValid(collaborators)) throw createError(404,"No es un ID valido | collaborator");
+            if(!ObjetcId.isValid(idProject)) throw createError(404,"No es un ID valido | idProject");
+
+            const project = await Project.findById(idProject)
+            if (!project) throw createError(404,"Proyecto no encontrado");
+
+            if (req.user._id.toString() !== project.createdBy.toString()) throw createError(401,"No estas autorizade");
+
+            if(req.user._id.toString() === collaborators.toString()) throw createError(401,"No puedes añadirte tu mismo");
+
+            project.collaborators.forEach(collaborator => {
+                if(collaborator.id.toString() === collaborators.toString()) throw createError(401,"El colaborador ya existe");
+            })
+            
+            const userCollaborator = await User.findById(collaborators)
+
+            const collaboratorNew = {
+                id: collaborators,
+                name: userCollaborator.name,
+                email: userCollaborator.email
+            }
+
+            project.collaborators = [...project.collaborators, collaboratorNew];
+
+            await project.save()
+
             return res.status(200).json({
                 ok : true,
-                msg :'Colaborador agregado'
+                msg :'Colaborador agregado',
+                project
             })
         } catch (error) {
             return errorResponse(res, error, "COLLABORATOR-ADD")
@@ -120,9 +152,29 @@ module.exports = {
     },
     removeCollaborator : async (req,res) => {
         try {
+            const {collaborators, idProject} = req.body;
+
+            if([collaborators, idProject].includes("") || !collaborators || !idProject) throw createError(400,"Debes ingresar un colaborador");
+            
+            if(!ObjetcId.isValid(collaborators)) throw createError(404,"No es un ID valido | collaborator");
+            if(!ObjetcId.isValid(idProject)) throw createError(404,"No es un ID valido | idProject");
+
+            const project = await Project.findById(idProject)
+            if (!project) throw createError(404,"Proyecto no encontrado");
+
+            if (req.user._id.toString() !== project.createdBy.toString()) throw createError(401,"No estas autorizade");
+
+            const collaboratorExist = project.collaborators.find(collaborator => collaborator.id.toString() === collaborators.toString())
+            if(!collaboratorExist) throw createError(404,"Colaborador no encontrado");
+
+            project.collaborators = project.collaborators.filter(collaborator => collaborator.id.toString() !== collaborators.toString())
+
+            await project.save()
+
             return res.status(200).json({
                 ok : true,
-                msg :'Colaborador eliminado'
+                msg :'Colaborador eliminado',
+                project
             })
         } catch (error) {
             return errorResponse(res, error, "COLLABORATOR-REMOVE")
