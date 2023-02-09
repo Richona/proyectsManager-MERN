@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useTasks } from "../hooks/useTasks";
 
 export const Task = ({_id, name, description, dateExpire, priority, state}) => {
-    const {showModal, handleShowModal, getTask, stateTask } = useTasks();
+    const {showModal, handleShowModal, getTask, stateTask, deleteTask } = useTasks();
 
     const handleUpdate = async (id) => {
         await getTask(id)
@@ -12,6 +12,10 @@ export const Task = ({_id, name, description, dateExpire, priority, state}) => {
 
     const handleState = async (id) => {
         await stateTask(id)
+    }
+
+    const handleDelete = async (id) => {
+        await deleteTask(id)
     }
 
     return (
@@ -40,7 +44,7 @@ export const Task = ({_id, name, description, dateExpire, priority, state}) => {
 
                     <button
                         className="h-10 px-2 py-1 bg-red-600  font-bold"
-                    /* onClick={} */
+                        onClick={() => handleDelete(_id)}
                     >
                         Eliminar
                     </button>

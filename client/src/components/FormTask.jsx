@@ -6,7 +6,7 @@ import { useTasks } from '../hooks/useTasks';
 import { Alert } from './Alert';
 
 export const FormTask = () => {
-    const { alert, showAlert, showModal, handleShowModal, task, storeTask } = useTasks();
+    const { alert, showAlert, sendingTask, showModal, handleShowModal, task, storeTask } = useTasks();
 
     const { id } = useParams()
 
@@ -172,7 +172,8 @@ export const FormTask = () => {
                 </select>
             </div>
             <button
-                className={`w-full mt-5 ${showModal.method === "AGREGAR" ? "bg-blue-600" : "bg-green-600"}`}
+                className={`w-full mt-5  ${showModal.method === "AGREGAR" ? "bg-blue-600 disabled:bg-blue-900" : "bg-green-600 disabled:bg-green-900"}`}
+                disabled={sendingTask}
             >
                 <span className="text-sm font-bold">
                     {showModal.method === "AGREGAR" ? "AGREGAR TAREA" : "EDITAR TAREA"}

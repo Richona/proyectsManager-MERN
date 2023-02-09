@@ -20,11 +20,12 @@ const TasksProvider = ({ children }) => {
 
     const [alert, setAlert] = useState({});
     const [loadingTask, setLoadingTask] = useState(true);
+    const [sendingTask, setSendingTask] = useState(false);
+    const [showModal, setShowModal] = useState({ state: true, method: "", task: "" });
 
     const [tasks, setTasks] = useState([]);
     const [task, setTask] = useState({});
-    const [showModal, setShowModal] = useState({ state: true, method: "", task: "" });
-
+    
     const showAlert = (msg, time = true) => {
         setAlert({
             msg
@@ -79,7 +80,7 @@ const TasksProvider = ({ children }) => {
             }
 
             const { data } = await clientAxios.get(`/tasks`, config)
-            data.tasks.sort(function(a,b){return a.state-b.state});
+            data.tasks.sort(function (a, b) { return a.state - b.state });
 
             setTasks(data.tasks)
 
@@ -103,6 +104,7 @@ const TasksProvider = ({ children }) => {
                 }
             }
 
+            setSendingTask(true)
             if (task.method === "EDITAR") {
                 const { data } = await clientAxios.put(`/tasks/${task.idTask}`, task, config)
 
@@ -113,7 +115,7 @@ const TasksProvider = ({ children }) => {
                     return taskState
                 })
 
-                tasksUpdated.sort(function(a,b){return a.state-b.state});
+                tasksUpdated.sort(function (a, b) { return a.state - b.state });
 
                 setTasks(tasksUpdated)
 
@@ -127,7 +129,7 @@ const TasksProvider = ({ children }) => {
 
                 const tasksOrder = [...tasks, data.taskStore]
 
-                tasksOrder.sort(function(a,b){return a.state-b.state});
+                tasksOrder.sort(function (a, b) { return a.state - b.state });
 
                 setTasks(tasksOrder)
 
@@ -136,6 +138,7 @@ const TasksProvider = ({ children }) => {
                     title: data.msg
                 })
             }
+            setSendingTask(false)
 
         } catch (error) {
             console.error(error)
@@ -163,8 +166,8 @@ const TasksProvider = ({ children }) => {
                 }
                 return taskState
             })
-            
-            tasksUpdated.sort(function(a,b){return a.state-b.state});
+
+            tasksUpdated.sort(function (a, b) { return a.state - b.state });
 
             setTasks(tasksUpdated)
 
@@ -174,6 +177,36 @@ const TasksProvider = ({ children }) => {
         }
     }
 
+    const deleteTask = async (id) => {
+        try {
+            const token = sessionStorage.getItem("token")
+            if (!token) return null
+
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: token
+                }
+            }
+
+            const { data } = await clientAxios.delete(`/tasks/${id}`, config)
+
+            const tasksFiltered = tasks.filter(task => task._id !== id)
+
+            tasksFiltered.sort(function (a, b) { return a.state - b.state });
+
+            setTasks(tasksFiltered)
+
+            Toast.fire({
+                icon: "success",
+                title: data.msg
+            })
+
+        } catch (error) {
+            console.error(error)
+            showAlert(error.response ? error.response.data.msg : "Ups, hubo un error", false)
+        }
+    }
 
     return (
         <TaskContext.Provider
@@ -181,6 +214,7 @@ const TasksProvider = ({ children }) => {
                 alert,
                 showAlert,
                 loadingTask,
+                sendingTask,
                 showModal,
                 handleShowModal,
                 task,
@@ -189,7 +223,8 @@ const TasksProvider = ({ children }) => {
                 getTasks,
                 setTasks,
                 storeTask,
-                stateTask
+                stateTask,
+                deleteTask
             }}
         >
             {children}
