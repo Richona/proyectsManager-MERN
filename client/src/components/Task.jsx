@@ -1,12 +1,15 @@
 import React, { useEffect } from "react";
+import { useProjects } from "../hooks/useProjects";
 import { useTasks } from "../hooks/useTasks";
 
 export const Task = ({_id, name, description, dateExpire, priority, state}) => {
+    const {showModalCollabo, handleShowModalCollabo} = useProjects();
     const {showModal, handleShowModal, getTask, stateTask, deleteTask } = useTasks();
 
     const handleUpdate = async (id) => {
         await getTask(id)
 
+        !showModalCollabo && handleShowModalCollabo()
         handleShowModal({state: !showModal.state, method: "EDITAR", task: "ok"})
     }
 

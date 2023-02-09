@@ -5,6 +5,7 @@ import { Plus } from "../assets/Plus";
 import { UserPlus } from "../assets/UserPlus";
 import { Alert } from "../components/Alert";
 import { Collaborator } from "../components/Collaborator";
+import { FormCollaborator } from "../components/FormCollaborator";
 import { FormTask } from "../components/FormTask";
 
 import { ProjectCard } from "../components/ProjectCard";
@@ -33,7 +34,10 @@ export const Project = () => {
                 <div className="relative">
                     <div
                         className="flex flex-col gap-8 mt-20 mx-6 md:flex-row text-gray-300"
-                        onClick={() => { showModal.state === false && handleShowModal({ state: true, method: "" }) }}
+                        onClick={() => { 
+                            showModal.state === false && handleShowModal({ state: true, method: "" }) 
+                            showModalCollabo=== false && handleShowModalCollabo()
+                        }}
                     >
                         <ProjectCard />
                         <div className="w-12/12 text-left md:w-9/12">
@@ -63,7 +67,10 @@ export const Project = () => {
                                 </p>
                                 <div
                                     className="flex gap-2 hover:text-indigo-600 cursor-pointer"
-                                    onClick={() => handleShowModal({ state: !showModal.state, method: "AGREGAR" })}
+                                    onClick={() => {
+                                        !showModalCollabo && handleShowModalCollabo()
+                                        handleShowModal({ state: !showModal.state, method: "AGREGAR", task: "" })
+                                    }}
                                 >
                                     <Plus />
                                     <small className="hidden md:inline-block">Nueva Tarea</small>
@@ -92,15 +99,19 @@ export const Project = () => {
                                 </p>
                                 <div
                                     className="flex gap-2 hover:text-indigo-600 cursor-pointer"
-                                    onClick={handleShowModalCollabo}
+                                    onClick={() => {
+                                        !showModal && handleShowModal({ state: !showModal.state, method: "" })
+                                        handleShowModalCollabo()
+                                    }}
                                 >
                                     <UserPlus />
                                     <small className="hidden md:inline-block">Agregar Colaborador</small>
                                 </div>
                             </div>
                             {/* Aquí se mostrarán todos los colaboradores //todo: componente Collaborator */}
-                            <div className="max-h-screen overflow-y-auto">
+                            <div className="overflow-y-auto" style={{maxHeight: "30rem"}}>
                                 {
+                                    project.collaborators &&
                                     project.collaborators.length
                                     ?
                                     project.collaborators.map(collaborator => <Collaborator key={collaborator._id} {...collaborator} />)
@@ -116,9 +127,9 @@ export const Project = () => {
                         <FormTask />
                     </div>
                     <div className={`mx-auto w-10/12 h-fit p-6 bg-gray-800 border rounded border-indigo-700 object-center transition ease-in-out z-10 duration-150 fixed inset-y-1/4 left-0 right-0 md:w-6/12 lg:w-5/12 xl:w-4/12 
-                        ${showModal.state && "hidden"}`}
+                        ${showModalCollabo && "hidden"}`}
                     >
-                        <FormTask />
+                        <FormCollaborator />
                     </div>
                 </div>
             )

@@ -25,6 +25,7 @@ export const FormTask = () => {
     const { name, description, dateExpire, priority } = formValues;
 
     useEffect(() => {
+        console.log(showModal.task)
         if (showModal.task) {
             inputName.current.value = task.name
             inputDescription.current.value = task.description
@@ -65,10 +66,6 @@ export const FormTask = () => {
             priority,
             project: id
         })
-
-        setTimeout(() => {
-            handleShowModal({state: !showModal.state, method: ""})
-        }, 3000);
     }
 
     return (
@@ -79,13 +76,13 @@ export const FormTask = () => {
             {
                 alert.msg && <Alert {...alert} />
             }
-            <div 
+            <div
                 className='flex justify-end mb-4'
-                onClick={() => {showModal.state === false && handleShowModal({state: true, method: ""})}}
+                onClick={() => { showModal.state === false && handleShowModal({ state: true, method: "" }) }}
             >
-                <XMark/>
+                <XMark />
             </div>
-            <h1 className='font-bold text-2xl md:text-4xl'>{showModal.method} TAREA</h1> 
+            <h1 className='font-bold text-2xl md:text-4xl'>{showModal.method} TAREA</h1>
             <div className="flex flex-wrap justify-center w-6/6 mt-5">
                 <label
                     htmlFor="name"

@@ -19,6 +19,7 @@ const ProjectsContext = createContext();
 const ProjectsProvider = ({ children }) => {
 
   const [alert, setAlert] = useState({});
+  const [alertCollabo, setAlertCollabo] = useState({});
   const [loading, setLoading] = useState(true);
   const [showModalCollabo, setShowModalCollabo] = useState(true);
 
@@ -36,7 +37,18 @@ const ProjectsProvider = ({ children }) => {
     }
   }
 
-  const handleShowModalCollabo = async () => {
+  const showAlertCollabo = (msg, time = true) => {
+    setAlertCollabo({
+      msg
+    });
+    if (time) {
+      setTimeout(() => {
+        setAlertCollabo({})
+      }, 3000);
+    }
+  }
+
+  const handleShowModalCollabo = () => {
     setShowModalCollabo(!showModalCollabo)
   }
 
@@ -163,12 +175,72 @@ const ProjectsProvider = ({ children }) => {
     }
   }
 
+  const storeCollaborator = async (collaborator) => {
+    try {
+      const token = sessionStorage.getItem("token")
+      if (!token) return null
+
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: token
+        }
+      }
+
+      const { data } = await clientAxios.post(`/projects/collaborator/add`, collaborator, config)
+
+      setProject(data.project)
+
+      Toast.fire({
+        icon: "success",
+        title: data.msg
+      })
+
+      setTimeout(() => {
+        handleShowModalCollabo()
+      }, 3000);
+
+    } catch (error) {
+      console.error(error)
+      showAlertCollabo(error.response ? error.response.data.msg : "Ups, hubo un error")
+    }
+  }
+
+  const deleteCollaborator = async (collaborator) => {
+    try {
+      const token = sessionStorage.getItem("token")
+      if (!token) return null
+
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: token
+        }
+      }
+
+      const { data } = await clientAxios.post(`/projects/collaborator/remove`, collaborator, config)
+
+      setProject(data.project)
+
+      Toast.fire({
+        icon: "success",
+        title: data.msg
+      })
+
+    } catch (error) {
+      console.error(error)
+      showAlertCollabo(error.response ? error.response.data.msg : "Ups, hubo un error", false)
+    }
+  }
+
   return (
     <ProjectsContext.Provider
       value={{
         loading,
         alert,
         showAlert,
+        alertCollabo,
+        showAlertCollabo,
         showModalCollabo,
         handleShowModalCollabo,
         projects,
@@ -176,7 +248,9 @@ const ProjectsProvider = ({ children }) => {
         project,
         getProject,
         storeProject,
-        deleteProject
+        deleteProject,
+        storeCollaborator,
+        deleteCollaborator
       }}
     >
       {children}

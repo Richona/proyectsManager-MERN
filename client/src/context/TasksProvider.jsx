@@ -138,11 +138,15 @@ const TasksProvider = ({ children }) => {
                     title: data.msg
                 })
             }
-            setSendingTask(false)
+        
+            setTimeout(() => {
+                setSendingTask(false)
+                handleShowModal({ state: !showModal.state, method: "" })
+            }, 3000);
 
         } catch (error) {
             console.error(error)
-            showAlert(error.response ? error.response.data.msg : "Ups, hubo un error", false)
+            showAlert(error.response ? error.response.data.msg : "Ups, hubo un error")
         }
     }
 
