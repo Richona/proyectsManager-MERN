@@ -1,13 +1,17 @@
 import React, { useEffect } from "react";
 import { useTasks } from "../hooks/useTasks";
 
-export const Task = ({_id, name, description, dateExpire, priority}) => {
-    const {showModal, handleShowModal, getTask } = useTasks();
+export const Task = ({_id, name, description, dateExpire, priority, state}) => {
+    const {showModal, handleShowModal, getTask, stateTask } = useTasks();
 
-    const handleTask = async (id) => {
+    const handleUpdate = async (id) => {
         await getTask(id)
 
         handleShowModal({state: !showModal.state, method: "EDITAR", task: "ok"})
+    }
+
+    const handleState = async (id) => {
+        await stateTask(id)
     }
 
     return (
@@ -22,15 +26,16 @@ export const Task = ({_id, name, description, dateExpire, priority}) => {
                 <div className="flex flex-wrap gap-3 mt-3 text-xs md:mt-0">
                     <button
                         className="h-10 px-2 py-1 bg-blue-600 font-bold"
-                        onClick={() => handleTask(_id)}
+                        onClick={() => handleUpdate(_id)}
                     >
                        Editar
                     </button>
 
                     <button
-                        className="h-10 px-2 py-1 bg-gray-600 font-bold"
+                        className={`h-10 px-2 py-1  font-bold ${state ? "bg-green-700":"bg-gray-600"}`}
+                        onClick={() => handleState(_id)}
                     >
-                        Incompleta
+                        {state ? "Completada" : "Incompleta"} 
                     </button>
 
                     <button

@@ -9,10 +9,10 @@ const Toast = Swal.mixin({
     timer: 3000,
     timerProgressBar: true,
     didOpen: (toast) => {
-      toast.addEventListener("mouseenter", Swal.stopTimer);
-      toast.addEventListener("mouseleave", Swal.resumeTimer);
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
     },
-  });
+});
 
 const TaskContext = createContext()
 
@@ -23,7 +23,7 @@ const TasksProvider = ({ children }) => {
 
     const [tasks, setTasks] = useState([]);
     const [task, setTask] = useState({});
-    const [showModal, setShowModal] = useState({state: true, method: "", task : ""});
+    const [showModal, setShowModal] = useState({ state: true, method: "", task: "" });
 
     const showAlert = (msg, time = true) => {
         setAlert({
@@ -36,31 +36,31 @@ const TasksProvider = ({ children }) => {
         }
     }
 
-    const handleShowModal = ({state, method, task}) => {
-        setShowModal({state, method, task})
+    const handleShowModal = ({ state, method, task }) => {
+        setShowModal({ state, method, task })
     }
 
     const getTask = async (id) => {
-    
+
         try {
-          const token = sessionStorage.getItem("token")
-          if (!token) return null
-    
-          const config = {
-            headers: {
-              "Content-type": "application/json",
-              Authorization: token
+            const token = sessionStorage.getItem("token")
+            if (!token) return null
+
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: token
+                }
             }
-          }
-    
-          const { data } = await clientAxios.get(`/tasks/${id}`, config)
-          setTask(data.task)
-    
+
+            const { data } = await clientAxios.get(`/tasks/${id}`, config)
+            setTask(data.task)
+
         } catch (error) {
-          console.error(error)
-          showAlert(error.response ? error.response.data.msg : "Ups, hubo un error", false)
-        } 
-      }
+            console.error(error)
+            showAlert(error.response ? error.response.data.msg : "Ups, hubo un error", false)
+        }
+    }
 
     const getTasks = async (id) => {
         setLoadingTask(true)
@@ -79,6 +79,8 @@ const TasksProvider = ({ children }) => {
             }
 
             const { data } = await clientAxios.get(`/tasks`, config)
+            data.tasks.sort(function(a,b){return a.state-b.state});
+
             setTasks(data.tasks)
 
         } catch (error) {
@@ -111,6 +113,8 @@ const TasksProvider = ({ children }) => {
                     return taskState
                 })
 
+                tasksUpdated.sort(function(a,b){return a.state-b.state});
+
                 setTasks(tasksUpdated)
 
                 Toast.fire({
@@ -120,7 +124,12 @@ const TasksProvider = ({ children }) => {
 
             } else {
                 const { data } = await clientAxios.post(`/tasks`, task, config)
-                setTasks([...tasks, data.taskStore])
+
+                const tasksOrder = [...tasks, data.taskStore]
+
+                tasksOrder.sort(function(a,b){return a.state-b.state});
+
+                setTasks(tasksOrder)
 
                 Toast.fire({
                     icon: "success",
@@ -134,6 +143,38 @@ const TasksProvider = ({ children }) => {
         }
     }
 
+    const stateTask = async (id) => {
+        try {
+            const token = sessionStorage.getItem("token")
+            if (!token) return null
+
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: token
+                }
+            }
+
+            const { data } = await clientAxios.get(`/tasks/change-state/${id}`, config)
+
+            const tasksUpdated = tasks.map(taskState => {
+                if (taskState._id === data.task._id) {
+                    return data.task
+                }
+                return taskState
+            })
+            
+            tasksUpdated.sort(function(a,b){return a.state-b.state});
+
+            setTasks(tasksUpdated)
+
+        } catch (error) {
+            console.error(error)
+            showAlert(error.response ? error.response.data.msg : "Ups, hubo un error", false)
+        }
+    }
+
+
     return (
         <TaskContext.Provider
             value={{
@@ -146,7 +187,9 @@ const TasksProvider = ({ children }) => {
                 getTask,
                 tasks,
                 getTasks,
+                setTasks,
                 storeTask,
+                stateTask
             }}
         >
             {children}

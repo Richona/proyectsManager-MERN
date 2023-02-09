@@ -31,9 +31,9 @@ export const Project = () => {
         <>
             {loading ? (<Spinner />) : (
                 <div className="relative">
-                    <div 
+                    <div
                         className="flex flex-col gap-8 mt-20 mx-6 md:flex-row text-gray-300"
-                        onClick={() => {showModal.state === false && handleShowModal({state: true, method: ""})}}
+                        onClick={() => { showModal.state === false && handleShowModal({ state: true, method: "" }) }}
                     >
                         <ProjectCard />
                         <div className="w-12/12 text-left md:w-9/12">
@@ -63,7 +63,7 @@ export const Project = () => {
                                 </p>
                                 <div
                                     className="flex gap-2 hover:text-indigo-600 cursor-pointer"
-                                    onClick={() => handleShowModal({state: !showModal.state, method: "AGREGAR"})}
+                                    onClick={() => handleShowModal({ state: !showModal.state, method: "AGREGAR" })}
                                 >
                                     <Plus />
                                     <small className="hidden md:inline-block">Nueva Tarea</small>
@@ -71,8 +71,8 @@ export const Project = () => {
 
                             </div>
                             {/* Aquí se mostrarán todas las tareas //todo: componente Task */}
-                            <div>
-                                
+                            <div className="max-h-screen overflow-y-auto">
+
                                 {
                                     loadingTask
                                         ?
