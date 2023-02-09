@@ -24,18 +24,16 @@ export const Project = () => {
     useEffect(() => {
         getProject(id)
         getTasks(id)
-    }, [id]);
-
+    }, []);
 
     if (alert.msg) return <Alert {...alert} />
-
     return (
         <>
             {loading ? (<Spinner />) : (
                 <div className="relative">
                     <div 
                         className="flex flex-col gap-8 mt-20 mx-6 md:flex-row text-gray-300"
-                        onClick={() => {showModal === false && handleShowModal(true)}}
+                        onClick={() => {showModal.state === false && handleShowModal({state: true, method: ""})}}
                     >
                         <ProjectCard />
                         <div className="w-12/12 text-left md:w-9/12">
@@ -65,7 +63,7 @@ export const Project = () => {
                                 </p>
                                 <div
                                     className="flex gap-2 hover:text-indigo-600 cursor-pointer"
-                                    onClick={() => handleShowModal(!showModal)}
+                                    onClick={() => handleShowModal({state: !showModal.state, method: "AGREGAR"})}
                                 >
                                     <Plus />
                                     <small className="hidden md:inline-block">Nueva Tarea</small>
@@ -74,6 +72,7 @@ export const Project = () => {
                             </div>
                             {/* Aquí se mostrarán todas las tareas //todo: componente Task */}
                             <div>
+                                
                                 {
                                     loadingTask
                                         ?
@@ -105,8 +104,8 @@ export const Project = () => {
                             <Collaborator />
                         </div>
                     </div>
-                    <div className={`mx-auto w-10/12 h-fit py-12 px-6 bg-gray-800 border rounded border-indigo-700 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0 md:w-6/12 
-                        ${showModal && "hidden"}`}
+                    <div className={`mx-auto w-10/12 h-fit p-6 bg-gray-800 border rounded border-indigo-700 object-center transition ease-in-out z-10 duration-150 fixed inset-y-1/4 left-0 right-0 md:w-6/12 lg:w-5/12 xl:w-4/12 
+                        ${showModal.state && "hidden"}`}
                     >
                         <FormTask />
                     </div>

@@ -22,7 +22,8 @@ const TasksProvider = ({ children }) => {
     const [loadingTask, setLoadingTask] = useState(true);
 
     const [tasks, setTasks] = useState([]);
-    const [showModal, setShowModal] = useState(true);
+    const [task, setTask] = useState({});
+    const [showModal, setShowModal] = useState({state: true, method: "", task : ""});
 
     const showAlert = (msg, time = true) => {
         setAlert({
@@ -35,9 +36,31 @@ const TasksProvider = ({ children }) => {
         }
     }
 
-    const handleShowModal = () => {
-        setShowModal(!showModal)
+    const handleShowModal = ({state, method, task}) => {
+        setShowModal({state, method, task})
     }
+
+    const getTask = async (id) => {
+    
+        try {
+          const token = sessionStorage.getItem("token")
+          if (!token) return null
+    
+          const config = {
+            headers: {
+              "Content-type": "application/json",
+              Authorization: token
+            }
+          }
+    
+          const { data } = await clientAxios.get(`/tasks/${id}`, config)
+          setTask(data.task)
+    
+        } catch (error) {
+          console.error(error)
+          showAlert(error.response ? error.response.data.msg : "Ups, hubo un error", false)
+        } 
+      }
 
     const getTasks = async (id) => {
         setLoadingTask(true)
@@ -78,12 +101,12 @@ const TasksProvider = ({ children }) => {
                 }
             }
 
-            if (task.id) {
-                const { data } = await clientAxios.put(`/tasks/${task.id}`, task, config)
+            if (task.method === "EDITAR") {
+                const { data } = await clientAxios.put(`/tasks/${task.idTask}`, task, config)
 
                 const tasksUpdated = tasks.map(taskState => {
                     if (taskState._id === data.taskUpdated._id) {
-                        return data.project
+                        return data.taskUpdated
                     }
                     return taskState
                 })
@@ -119,6 +142,8 @@ const TasksProvider = ({ children }) => {
                 loadingTask,
                 showModal,
                 handleShowModal,
+                task,
+                getTask,
                 tasks,
                 getTasks,
                 storeTask,
