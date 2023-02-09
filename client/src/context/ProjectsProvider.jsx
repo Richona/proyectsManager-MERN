@@ -20,6 +20,7 @@ const ProjectsProvider = ({ children }) => {
 
   const [alert, setAlert] = useState({});
   const [loading, setLoading] = useState(true);
+  const [showModalCollabo, setShowModalCollabo] = useState(true);
 
   const [projects, setProjects] = useState([]);
   const [project, setProject] = useState({});
@@ -33,6 +34,10 @@ const ProjectsProvider = ({ children }) => {
         setAlert({})
       }, 3000);
     }
+  }
+
+  const handleShowModalCollabo = async () => {
+    setShowModalCollabo(!showModalCollabo)
   }
 
   const getProjects = async () => {
@@ -164,6 +169,8 @@ const ProjectsProvider = ({ children }) => {
         loading,
         alert,
         showAlert,
+        showModalCollabo,
+        handleShowModalCollabo,
         projects,
         getProjects,
         project,

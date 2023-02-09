@@ -111,28 +111,28 @@ module.exports = {
     },
     addCollaborator : async (req,res) => {
         try {
-            const {collaborators, idProject} = req.body;
+            const {email, idProject} = req.body;
 
-            if([collaborators, idProject].includes("") || !collaborators || !idProject) throw createError(400,"Debes ingresar un colaborador");
-            
-            if(!ObjetcId.isValid(collaborators)) throw createError(404,"No es un ID valido | collaborator");
             if(!ObjetcId.isValid(idProject)) throw createError(404,"No es un ID valido | idProject");
+
+            if([email, idProject].includes("") || !email || !idProject) throw createError(400,"Todos los campos son obligatorios");
+
+            const userCollaborator = await User.findOne({ email })
+            if (!userCollaborator) throw createError(404,"Usuario no encontrado");
 
             const project = await Project.findById(idProject)
             if (!project) throw createError(404,"Proyecto no encontrado");
 
             if (req.user._id.toString() !== project.createdBy.toString()) throw createError(401,"No estas autorizade");
 
-            if(req.user._id.toString() === collaborators.toString()) throw createError(401,"No puedes añadirte tu mismo");
+            if(req.user._id.toString() === userCollaborator._id.toString()) throw createError(401,"No puedes añadirte tu mismo");
 
             project.collaborators.forEach(collaborator => {
-                if(collaborator.id.toString() === collaborators.toString()) throw createError(401,"El colaborador ya existe");
+                if(collaborator.id.toString() === userCollaborator._id.toString()) throw createError(401,"El colaborador ya existe");
             })
-            
-            const userCollaborator = await User.findById(collaborators)
 
             const collaboratorNew = {
-                id: collaborators,
+                id: userCollaborator._id,
                 name: userCollaborator.name,
                 email: userCollaborator.email
             }
@@ -152,22 +152,24 @@ module.exports = {
     },
     removeCollaborator : async (req,res) => {
         try {
-            const {collaborators, idProject} = req.body;
+            const {email, idProject} = req.body;
 
-            if([collaborators, idProject].includes("") || !collaborators || !idProject) throw createError(400,"Debes ingresar un colaborador");
+            if([email, idProject].includes("") || !email || !idProject) throw createError(400,"Todos los campos son obligatorios");
             
-            if(!ObjetcId.isValid(collaborators)) throw createError(404,"No es un ID valido | collaborator");
             if(!ObjetcId.isValid(idProject)) throw createError(404,"No es un ID valido | idProject");
+
+            const userCollaborator = await User.findOne({ email })
+            if (!userCollaborator) throw createError(404,"Usuario no encontrado");
 
             const project = await Project.findById(idProject)
             if (!project) throw createError(404,"Proyecto no encontrado");
 
             if (req.user._id.toString() !== project.createdBy.toString()) throw createError(401,"No estas autorizade");
 
-            const collaboratorExist = project.collaborators.find(collaborator => collaborator.id.toString() === collaborators.toString())
+            const collaboratorExist = project.collaborators.find(collaborator => collaborator.id.toString() === userCollaborator._id.toString())
             if(!collaboratorExist) throw createError(404,"Colaborador no encontrado");
 
-            project.collaborators = project.collaborators.filter(collaborator => collaborator.id.toString() !== collaborators.toString())
+            project.collaborators = project.collaborators.filter(collaborator => collaborator.id.toString() !== userCollaborator._id.toString())
 
             await project.save()
 

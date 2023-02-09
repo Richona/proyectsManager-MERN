@@ -16,7 +16,7 @@ import { useTasks } from "../hooks/useTasks";
 export const Project = () => {
     const { id } = useParams()
 
-    const { loading, alert, getProject, project } = useProjects();
+    const { loading, alert, showModalCollabo, handleShowModalCollabo, getProject, project } = useProjects();
     const { loadingTask, showModal, handleShowModal, tasks, getTasks } = useTasks()
 
     const { name, description, dateExpire, client, _id } = project
@@ -92,17 +92,28 @@ export const Project = () => {
                                 </p>
                                 <div
                                     className="flex gap-2 hover:text-indigo-600 cursor-pointer"
-                                /* onClick={} */
+                                    onClick={handleShowModalCollabo}
                                 >
                                     <UserPlus />
                                     <small className="hidden md:inline-block">Agregar Colaborador</small>
                                 </div>
                             </div>
                             {/* Aquí se mostrarán todos los colaboradores //todo: componente Collaborator */}
-                            <Collaborator />
-                            <Collaborator />
-                            <Collaborator />
+                            <div className="max-h-screen overflow-y-auto">
+                                {
+                                    project.collaborators.length
+                                    ?
+                                    project.collaborators.map(collaborator => <Collaborator key={collaborator._id} {...collaborator} />)
+                                    :
+                                    <p>No hay colaboradores agregados</p>
+                                }
+                            </div>
                         </div>
+                    </div>
+                    <div className={`mx-auto w-10/12 h-fit p-6 bg-gray-800 border rounded border-indigo-700 object-center transition ease-in-out z-10 duration-150 fixed inset-y-1/4 left-0 right-0 md:w-6/12 lg:w-5/12 xl:w-4/12 
+                        ${showModal.state && "hidden"}`}
+                    >
+                        <FormTask />
                     </div>
                     <div className={`mx-auto w-10/12 h-fit p-6 bg-gray-800 border rounded border-indigo-700 object-center transition ease-in-out z-10 duration-150 fixed inset-y-1/4 left-0 right-0 md:w-6/12 lg:w-5/12 xl:w-4/12 
                         ${showModal.state && "hidden"}`}
