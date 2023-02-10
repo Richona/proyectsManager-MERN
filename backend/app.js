@@ -14,7 +14,7 @@ const app = express();
 const cors = require("cors");
 const checkToken = require('./middlewares/checkToken');
 
-const whiteList = [process.env.URL_FRONTEND, process.env.URL_FRONTEND2]
+const whiteList = [process.env.URL_FRONTEND, process.env.URL_FRONTEND2, process.env.URL_PRODUCTION]
 const corsOptions = {
   origin: function (origin, cb) {
     if (whiteList.includes(origin)) {
