@@ -23,7 +23,7 @@ import { Project } from '../pages/Project';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<AuthLayout />}>
+    <Route basename='/' element={<AuthLayout />}>
       <Route path='/' exact={true} element={<Home />} />
 
       {/* ROUTES PUBLICS */}
