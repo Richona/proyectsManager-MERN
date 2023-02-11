@@ -18,7 +18,7 @@ if(process.env.MAIL_USER_APIKEY){
         }
     })
 }
-/* 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 */
+
 
 
 module.exports = {
