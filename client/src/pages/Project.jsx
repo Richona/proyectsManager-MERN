@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Pencil } from "../assets/pencil";
+import { Pencil } from "../assets/Pencil";
 import { Plus } from "../assets/Plus";
 import { UserPlus } from "../assets/UserPlus";
 import { Alert } from "../components/Alert";
