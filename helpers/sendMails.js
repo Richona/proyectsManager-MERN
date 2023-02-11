@@ -1,14 +1,13 @@
 const nodemailer = require('nodemailer');
+const nodemailerSendgrid = require('nodemailer-sendgrid');
 let transport
 
-if(process.env.MAIL_USER_GMAIL){
-    transport = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.MAIL_USER_GMAIL,
-            pass: process.env.MAIL_PASS_GMAIL
-        }
-    })
+if(process.env.MAIL_USER_APIKEY){
+    transport = nodemailer.createTransport(
+        nodemailerSendgrid({
+            apiKey: process.env.MAIL_USER_APIKEY
+        })
+    )
 }else{
     transport = nodemailer.createTransport({
         host: process.env.MAIL_HOST,
@@ -19,6 +18,7 @@ if(process.env.MAIL_USER_GMAIL){
         }
     })
 }
+/* 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 */
 
 
 module.exports = {
@@ -26,9 +26,9 @@ module.exports = {
         const { name, email, token } = data;
 
         try {
-            if (process.env.MAIL_USER_GMAIL) {
+            if (process.env.MAIL_USER_APIKEY) {
                 await transport.sendMail({
-                    from: process.env.MAIL_USER_GMAIL,
+                    from: "Project Manager <info@projectmagenerpa.com>",
                     to: email,
                     subject: "Confirma tu cuenta",
                     text: "Confirma tu cuenta en Project Manager",
@@ -54,9 +54,9 @@ module.exports = {
         const { name, email, token } = data;
 
         try {
-            if (process.env.MAIL_USER_GMAIL) {
+            if (process.env.MAIL_USER_APIKEY) {
                 await transport.sendMail({
-                    from: process.env.MAIL_USER_GMAIL,
+                    from: "Project Manager <info@projectmagenerpa.com>",
                     to: email,
                     subject: "Reestablece tu contraseña",
                     text: "Reestablece tu contraseña en Project Manager",
